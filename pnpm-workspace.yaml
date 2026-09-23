@@ -1,0 +1,7 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  'esbuild@0.21.5': true
+  'esbuild@0.28.2': true
