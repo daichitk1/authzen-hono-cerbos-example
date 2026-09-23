@@ -1,0 +1,65 @@
+---
+name: DocumentPolicyTestSuite
+description: Tests for the Document owner and admin authorization rules
+
+principals:
+  yuki:
+    id: yuki
+    roles:
+      - user
+
+  ren:
+    id: ren
+    roles:
+      - user
+
+  admin:
+    id: admin
+    roles:
+      - admin
+
+resources:
+  document_owned_by_yuki:
+    kind: document
+    id: document-123
+    attr:
+      ownerId: yuki
+
+tests:
+  - name: Document action matrix
+    input:
+      principals:
+        - yuki
+        - ren
+        - admin
+      resources:
+        - document_owned_by_yuki
+      actions:
+        - read
+        - update
+        - delete
+        - unknown
+    expected:
+      - principal: yuki
+        resource: document_owned_by_yuki
+        actions:
+          read: EFFECT_ALLOW
+          update: EFFECT_ALLOW
+          delete: EFFECT_ALLOW
+          unknown: EFFECT_DENY
+
+      - principal: ren
+        resource: document_owned_by_yuki
+        actions:
+          read: EFFECT_ALLOW
+          update: EFFECT_DENY
+          delete: EFFECT_DENY
+          unknown: EFFECT_DENY
+
+      - principal: admin
+        resource: document_owned_by_yuki
+        actions:
+          read: EFFECT_ALLOW
+          update: EFFECT_ALLOW
+          delete: EFFECT_ALLOW
+          unknown: EFFECT_DENY

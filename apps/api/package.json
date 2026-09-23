@@ -1,0 +1,29 @@
+{
+  "name": "@authzen-demo/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "pnpm --filter @authzen-demo/contracts build && pnpm --filter @authzen-demo/domain build",
+    "dev": "tsx watch src/dev-server.ts",
+    "start": "tsx src/dev-server.ts",
+    "prebuild": "pnpm --filter @authzen-demo/contracts build && pnpm --filter @authzen-demo/domain build",
+    "build": "tsc -p tsconfig.build.json",
+    "pretypecheck": "pnpm --filter @authzen-demo/contracts build && pnpm --filter @authzen-demo/domain build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest:unit": "pnpm --filter @authzen-demo/contracts build && pnpm --filter @authzen-demo/domain build",
+    "test:unit": "vitest run src"
+  },
+  "dependencies": {
+    "@authzen-demo/contracts": "workspace:*",
+    "@authzen-demo/domain": "workspace:*",
+    "@hono/node-server": "2.0.10",
+    "hono": "4.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "tsx": "4.23.8",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}

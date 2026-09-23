@@ -1,0 +1,11 @@
+server:
+  httpListenAddr: ':3592'
+
+engine:
+  defaultPolicyVersion: default
+
+storage:
+  driver: disk
+  disk:
+    directory: /policies
+    watchForChanges: true

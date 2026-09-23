@@ -1,0 +1,39 @@
+apiVersion: api.cerbos.dev/v1
+
+# AuthZENのresource.type = "document"が、CerbosではこのResource Policyへ対応する。
+resourcePolicy:
+  version: default
+  resource: document
+
+  # CerbosはDefault Denyなので、どのALLOW Ruleにも一致しなければDENYになる。
+  rules:
+    # readはOwnerかどうかに関係なく、user / adminの両方を許可する。
+    - name: read_document
+      actions:
+        - read
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+        - admin
+
+    # 一般userのupdate / deleteはOwnerだけ許可する。
+    # AuthZENのresource.properties.ownerIdはCerbosでresource.attr.ownerIdへMappingされる。
+    - name: owner_can_modify_document
+      actions:
+        - update
+        - delete
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+      condition:
+        match:
+          expr: request.resource.attr.ownerId == request.principal.id
+
+    # adminはOwner判定を行わず、update / deleteを許可する。
+    - name: admin_can_modify_document
+      actions:
+        - update
+        - delete
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
